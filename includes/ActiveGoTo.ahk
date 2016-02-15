@@ -230,7 +230,7 @@ RoutineInfoGui_Create() {
 
   ;apply previous position and size
   IniRead, Pos, Config.ini, ActiveGoTo, Pos, x0
-  IniRead, Size, Config.ini, ActiveGoTo, Size,
+  IniRead, Size, Config.ini, ActiveGoTo, Size, 0
   Gui, %ActiveGoTo_GUI%:Show, %Pos% %Size% Hide
 
 ;   WinWaitClose, ahk_id %ActiveGoTo_HWND%  ;--waiting for gui to close (modal simulation..)

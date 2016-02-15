@@ -88,7 +88,7 @@ ISHelp_Show(pX, pY, pCmnd)
 	pCmnd := ISHelp_GetHelpPage( pCmnd )
 	if (pCmnd != ISHelp_cmnd)
 	{
-		Url2Load = %pCmnd%     ;*** All work now done in GetHelpPage
+		Url2Load := pCmnd     ;*** All work now done in GetHelpPage
 		
 ; 		Url2Load = ms-its:%ISense_m_chm%::/docs/commands/%pCmnd%.htm
 ;		DllCall("lbbrowse3\Navigate", "str", Url2Load)
@@ -105,7 +105,10 @@ ISHelp_Show(pX, pY, pCmnd)
 		Gui, %ISHelp_Gui%:Show, x%pX% y%pY% w%ISHelp_width% h%ISHelp_height% NoActivate, ISense_Help
 		ISHelp_SetWindow(true)
 	}
-	else Gui, %ISHelp_Gui%:Show, x%pX% y%pY% w%ISHelp_width% h%ISHelp_height% NoActivate, ISense_Help
+	else
+	{
+		Gui, %ISHelp_Gui%:Show, x%pX% y%pY% w%ISHelp_width% h%ISHelp_height% NoActivate, ISense_Help
+	}
 
 	ISHelp_visible := true
 	ISHelp_cmnd := pCmnd
@@ -132,50 +135,50 @@ ISHelp_GetHelpPage( pCmnd )
 
   if !initialised
   {
-    ISense_m_SendMessage        =  commands/PostMessage.htm
-    ISense_m_IfWinNotActive     =  commands/IfWinActive.htm
-    ISense_m_IfWinNotExist      =  commands/IfWinExist.htm
-    ISense_m_StringTrimRight    =  commands/StringTrimLeft.htm
-    ISense_m_StringUpper        =  commands/StringLower.htm
+    ISense_m_SendMessage        :=  "commands/PostMessage.htm"
+    ISense_m_IfWinNotActive     :=  "commands/IfWinActive.htm"
+    ISense_m_IfWinNotExist      :=  "commands/IfWinExist.htm"
+    ISense_m_StringTrimRight    :=  "commands/StringTrimLeft.htm"
+    ISense_m_StringUpper        :=  "commands/StringLower.htm"
 
     ;commands/Send.htm
-    AnchorList = SendRaw,SendInput,SendPlay
+    AnchorList := "SendRaw,SendInput,SendPlay"
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField% = commands/Send.htm
+      ISense_m_%A_LoopField% := "commands/Send.htm"
       
     ;commands/IfEqual.htm
-    AnchorList = if,IfNotEqual,IfGreater,IfGreaterOrEqual,IfLess,IfLessOrEqual
+    AnchorList := "if,IfNotEqual,IfGreater,IfGreaterOrEqual,IfLess,IfLessOrEqual"
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField% = commands/IfEqual.htm
+      ISense_m_%A_LoopField% := "commands/IfEqual.htm"
 
     ;commands/%A_LoopField%.htm#
     AnchorList = OnMessage,RegExMatch,RegExReplace,RegisterCallback,GetKeyState,DllCall
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField%[] = commands/%A_LoopField%.htm
+      ISense_m_%A_LoopField%[] := "commands/" A_LoopField ".htm"
 
-    ;commands/ListView.htm#
+    ;commands/ListView`.htm#
     AnchorList = LV_Add,LV_Insert,LV_Modify,LV_Delete,LV_ModifyCol,LV_InsertCol
                 ,LV_DeleteCol,LV_GetCount,LV_GetNext,LV_GetText,LV_SetImageList
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField%[] = commands/ListView.htm#%A_LoopField%
+      ISense_m_%A_LoopField%[] := "commands/ListView.htm#" A_LoopField
       
     ;commands/ListView#IL
     AnchorList = IL_Create,IL_Add,IL_Destroy
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField%[] = commands/ListView.htm#%A_LoopField%
+      ISense_m_%A_LoopField%[] := "commands/ListView.htm#" A_LoopField
       
     ;commands/TreeView#
     AnchorList = TV_Modify,TV_Delete,TV_GetSelection,TV_GetCount,TV_GetParent
                  ,TV_GetChild,TV_GetPrev,TV_GetNext
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField%[] = commands/TreeView.htm#%A_LoopField%
+      ISense_m_%A_LoopField%[] := "commands/TreeView.htm#" A_LoopField
       
     ;commands/Function#
     AnchorList = FileExist,InStr,SubStr,StrLen,WinActive,WinExist
                  ,Asc,Chr,IsLabel,NumGet,NumPut,VarSetCapacity,Abs,Ceil,Exp,Floor
                  ,Log,Ln,Mod,Round,Sqrt,Sin,Cos,Tan,ASin,ACos,ATan
     Loop, Parse, AnchorList, `,
-      ISense_m_%A_LoopField%[] = Functions.htm#%A_LoopField%
+      ISense_m_%A_LoopField%[] := "Functions.htm#" A_LoopField
    
     initialised := true
   }
